@@ -1,0 +1,12 @@
+apiVersion: skaffold/v2beta10
+kind: Config
+metadata:
+  name: autodockerdeployer
+build:
+  artifacts:
+  - image: autodockerdeployer
+    jib: {}
+deploy:
+  kubectl:
+    manifests:
+    - k8s-*
