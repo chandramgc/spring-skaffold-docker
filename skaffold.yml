@@ -1,12 +1,23 @@
-apiVersion: skaffold/v2beta10
+apiVersion: skaffold/v1
 kind: Config
-metadata:
-  name: autodockerdeployer
 build:
+  tagPolicy:
+    gitCommit: {}
   artifacts:
-  - image: autodockerdeployer
-    jib: {}
+    - image: chandramgc/autodockerdeployer
+      # jib: {}
+      kaniko:
+        image: mgit/base:kaniko-executor-debug-stable
+        buildContext:
+          localDir: {}
+        cache: {}
+        # buildArgs:
+        # - "--context=git://github.com/scriptcamp/kubernetes-kaniko"
+        # - "--destination=chandramgc/autodockerdeployer:6d5351a-dirty"
+  cluster:
+    dockerConfig: 
+      secretName: dockercred
 deploy:
   kubectl:
     manifests:
-    - k8s-*
+      - k8s-*
